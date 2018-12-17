@@ -1,0 +1,39 @@
+Attribute	Description
+ID-			Employee ID
+Name-			Employee Name
+Department-		Department
+GEO-			Geographical location
+Role-			Current Role or title of employee
+Rising Star-		Indicates the level of promise or promote-ability the employee has. Scale(1-5)
+Will_Relocate-		Is the employee willing to relocate? 0- No, 1- Yes
+Critical-		Is the employee critical to the organization? 0- No, 1- Yes
+Trending Perf-		How is the employee trending in performance this year? Scale (1-10)
+Talent_Level-		This field represents a subjective level of management's view of the employee. Scale (1-10)
+Percent_Remote-		The percentage of the employee's work that is done remotely.
+EMP_Sat_OnPrem_1-	"One indicator from a survey that was sent to employees.On prem (On premise) 
+means that the employee maintains a high percentage of work on the corporation’s
+ physical work locations. Scale (1-10)"
+EMP_Sat_Remote_1-	"One indicator from a survey that was sent to employees. Remote (distance employee)
+ means that the employee does a high percentage of work away from the 
+corporation’s physical work locations. Scale (1-10)"
+EMP_Engagement_1-	"One indicator from a survey that was sent to employees. Engagement represents the
+ employee's feeling about how they feel about being engaged in company activities. Scale(1-5) "
+last_evaluation-	The score on the last employee evaluation.Scale (1-10)
+number_project-		The number of projects the employee works on throughout the year.
+average_montly_hours-	The average number of hours the employee works monthly.
+time_spend_company-	Years of service
+left_Company-		Did the employee leave the company? 0- No, 1- Yes
+promotion_last_5years-	Did the employee get promoted in last 5 years? 0- No, 1- Yes
+salary-			Relative pay grade (low, medium, high) by role.
+Gender-			M or F
+Emp_Work_Status2-	"One indicator from a survey that was sent to employees. Status represents how
+ strongly employee feels about their status level in the organization. Scale (1-10)"
+Emp_Identity-		How the employee identifies themselves with the company. Scale (1-10)
+Emp_Role-		How the employee identifies themselves with the importance of their role in the company. Scale (1-10)
+Emp_Position-		How the employee identifies themselves with the importance of their position in the company. Scale (1-10)
+Emp_Title-		How the employee feels about their title.Scale (1-10)
+EnvironmentSatisfaction-	
+Emp_Competitive_1-	"One indicator from a survey that was sent to employees. How employee feels 
+about the competitive nature of work in the organization. Scale (1-10)"
+Emp_Collaborative_1-	"One indicator from a survey that was sent to employees. How employee feels
+ about the collaborative nature of work in the organization.Scale (1-10)"
