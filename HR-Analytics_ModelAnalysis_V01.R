@@ -181,3 +181,38 @@ pred.linear.ts.round <- round(pred.linear.ts,0)
 #Accuracy
 mean(pred.linear.ts.round==valid.linear.ts$time_spend_company)
 
+#---------------------------------------------D) How satisfied are the employees in company?----------------------------------------------
+#Linear Regression for Employee Satisfaction
+set.seed(123)
+#Partitioning data into training (60%) and validation(40%) for linear regression
+train.lm.es.index <- createDataPartition(hrform.df$Emp_Satisfaction , p= 0.6, list = FALSE)
+train.linear.es <-hrform.df[train.lm.es.index,]
+valid.linear.es <- hrform.df[-train.lm.es.index,]
+
+hr_emp_sat.lm <- lm(Emp_Satisfaction ~ ., data = train.linear.es )
+summary(hr_emp_sat.lm)
+
+pred.linear.es <- predict(hr_emp_sat.lm, valid.linear.es)
+
+#gains
+gain.linear.es <- gains(valid.linear.es$Emp_Satisfaction , pred.linear.es, groups = 10)
+gain.linear.es
+
+#Lift
+plot(c(0,gain.linear.es$cume.pct.of.total*sum(pred.linear.es))~c(0,gain.linear.es$cume.obs), 
+     xlab = "# cases", ylab = "Cumulative", main = "", type = "l")
+lines(c(0,sum(pred.linear.es))~c(0, dim(valid.linear.es)[1]), lty = 5)
+
+#decile chart and values
+heights <- gain.linear.es$mean.resp/mean(valid.linear.es$Emp_Satisfaction)
+midpoints <- barplot(heights, names.arg = gain.linear.es$depth,  ylim = c(0,9), col = "blue",  
+                     xlab = "Percentile", ylab = "Decile lift", 
+                     main = "Decile-chart")
+text(midpoints, heights+0.5, labels=round(heights, 1), cex = 0.8)
+
+pred.linear.es.round <- round(pred.linear.es,0)
+
+#Accuracy
+mean(pred.linear.es.round==valid.linear.es$Emp_Satisfaction)
+mean(hrform.df$Emp_Satisfaction)
+
