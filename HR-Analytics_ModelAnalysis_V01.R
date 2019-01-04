@@ -216,3 +216,32 @@ pred.linear.es.round <- round(pred.linear.es,0)
 mean(pred.linear.es.round==valid.linear.es$Emp_Satisfaction)
 mean(hrform.df$Emp_Satisfaction)
 
+#--------------------------------E)	Running K-mean Clustering to find out which set of employees are more likely to exit-----------------------
+
+
+###Normalize the data
+hrform.norm.df <- as.data.frame(sapply(hrform.df, scale))
+###Function to calculate the AIC
+kmeansAIC = function(km){
+  
+  m = ncol(km$centers)
+  n = length(km$cluster)
+  k = nrow(km$centers)
+  D = km$tot.withinss
+  return(D + 2*m*k)
+}
+###Finding the optimal k with lowest AIC
+set.seed(123)
+km <- kmeans(hrform.norm.df, 20)
+for (k in 1:30) {
+  km <- kmeans(hrform.norm.df, k)
+  print(k)
+  print(kmeansAIC(km))
+}
+###k-Means Clustering 
+km <- kmeans(hrform.norm.df, 20)
+### Cluster size
+km$size
+### Cluster centroids
+km$centers
+#-------------------------------------------------------------------------------------------
