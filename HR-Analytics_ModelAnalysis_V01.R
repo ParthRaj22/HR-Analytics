@@ -5,6 +5,10 @@ library(gains)
 library(leaps)
 library(caret)
 library(MASS)
+library(class)
+library(gmodels)
+
+
 
 #Read the HR Dataset
 hr.df <- read.csv("HR.csv", header = TRUE)
@@ -145,6 +149,43 @@ confusiontable.linear.rs
 #Accuracy
 mean(pred.linear.rs.round==valid.linear.rs$Rising_Star)
 
+hr.logit$Role <- factor(hr.logit$Role, levels = c("Director","Level 1","Level 2-4","Manager","Senior Director","Senior Manager","VP"),
+                     labels = c(3,7,6,5,2,4,1))
+
+###KNN
+### Partitioning data
+set.seed(123456789)
+train.index <- sample(row.names(hr.logit), 0.6*dim(hr.logit)[1])  
+valid.index <- setdiff(row.names(hr.logit), train.index)  
+train.df <- hr.logit[train.index, ]
+valid.df <- hr.logit[valid.index, ]
+
+train.norm.df <- train.df
+valid.norm.df <- valid.df
+hr.norm.df <- hr.logit
+### Normalize data using preProcess() from CARET 
+norm.values <- preProcess(train.df[, c(1,3:26)], method=c("center", "scale"))
+train.norm.df[, c(1,3:26)] <- predict(norm.values, train.df[, c(1,3:26)])
+valid.norm.df[, c(1,3:26)] <- predict(norm.values, valid.df[, c(1,3:26)])
+
+train.norm.df$salary <- factor(train.norm.df$salary, levels = c("high", "low", "medium"), 
+                       labels = c(1, 3, 2))
+train.norm.df$Gender <- factor(train.norm.df$Gender, levels = c("F", "M"), 
+                       labels = c(0, 1))
+
+valid.norm.df$salary <- factor(valid.norm.df$salary, levels = c("high", "low", "medium"), 
+                               labels = c(1, 3, 2))
+valid.norm.df$Gender <- factor(valid.norm.df$Gender, levels = c("F","M"), 
+                               labels = c(0,1))
+
+### Run K-NN
+nn <- knn(train = train.norm.df[, c(1,3:26)], test = valid.norm.df[, c(1,3:26)], 
+          cl = train.norm.df[, 2], k = 5)
+### Nearest-neighbor Index
+row.names(train.df)[attr(nn, "nn.index")]
+### Showing the accuracy by using confusion matrix
+table(nn, valid.norm.df$Rising_Star)
+CrossTable(x=nn,y=valid.norm.df$Rising_Star,prop.chisq=F)
 
 #-------------------------------------------C)	How much time will the employee spend in company?------------------------------------------------
 
@@ -242,6 +283,7 @@ for (k in 1:30) {
 km <- kmeans(hrform.norm.df, 20)
 ### Cluster size
 km$size
-### Cluster centroids
+### Cluster centroids-Check the column left_company for cluster values of 1+ 
 km$centers
 #-------------------------------------------------------------------------------------------
+
